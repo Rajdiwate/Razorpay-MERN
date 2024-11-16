@@ -21,9 +21,9 @@ export default function ConfirmPayment() {
           order_id: res.data.order.id, // This is the order_id created in the backend
           callback_url: `${import.meta.env.VITE_API_ENDPOINT}/api/paymentverification`, // Your success URL
           prefill: {
-            name:name,
+            name:user?.name || "test",
             email:"test@test.com",
-            contact:'9999999999'
+            contact:user?.number || '123456789'
           },
           theme: {
             color: '#F37254'
