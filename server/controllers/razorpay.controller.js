@@ -28,7 +28,7 @@ const verifyPayment = async(req,res,next)=>{
         console.log(generated_signature)
         console.log(razorpay_signature)
         if(generated_signature === razorpay_signature ){
-            //save details in database
+            // save details in database
             // console.log(req)
             res.redirect(`${req.headers.origin}/paymentsuccess`)
             // res.status(200).json({success:true})

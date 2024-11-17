@@ -1,8 +1,18 @@
 import { app } from "./app.js";
-import errorMiddleware from "./middleware/error.middleware.js";
-
-import razorpay from './routes/razorpay.routes.js'
 import Razorpay from "razorpay";
+import connectDb from './db/index.js'
+
+
+
+
+connectDb().then(()=>{
+    app.listen(process.env.PORT || 8000 , ()=>{
+        console.log("listening on " , process.env.PORT);
+    })
+
+}).catch((error )=>{
+    console.log("Error while connection to db" , error.message)
+}) 
 
 
 
@@ -14,7 +24,4 @@ export const instance = new Razorpay({
 
 
 
-app.use('/api' , razorpay)
-
-app.use(errorMiddleware)
 
