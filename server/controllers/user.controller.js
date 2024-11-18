@@ -40,13 +40,14 @@ const registerUser = async (req, res, next) => {
         }
 
         // Generate access and refresh tokens
-        const { AT} = await generateTokens(createdUser._id);
+        const {AT} = await generateTokens(createdUser._id);
 
         // Cookie options for accessToken and refreshToken
         const cookieOptions = {
             expires: new Date(Date.now() + Number(process.env.COOKIE_EXPIRE) * 24 * 60 * 60 * 1000),
             httpOnly: true,
-            // secure: true  // Uncomment for secure HTTPS environments
+            secure: process.env.PRODUCTION,  // Uncomment for secure HTTPS environments
+            sameSite: process.env.PRODUCTION ? 'none' : 'lax',
         };
 
         // Return response with tokens in cookies and the created user
@@ -80,7 +81,8 @@ const loginUser = async (req, res, next) => {
         const options = {
             maxAge: new Date(Date.now() + (process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000)),
             httpOnly: true,
-            // secure: true
+            secure: process.env.PRODUCTION,
+            sameSite: process.env.PRODUCTION ? 'none' : 'lax',
         }
 
         const userObject = user.toObject();
