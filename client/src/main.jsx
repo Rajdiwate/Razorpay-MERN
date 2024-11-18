@@ -16,6 +16,11 @@ import {Provider, useDispatch} from 'react-redux'
 import { store } from './redux/store.js';
 import { getUser } from './redux/authSlice.js';
 import Protected from './components/Protected.jsx';
+import AboutUs from './pages/AboutUs.jsx';
+import ContactUs from './pages/ContactUs.jsx';
+import PrivacyPolicy from './pages/PrivacyPolicy.jsx';
+import CancellationPolicy from './pages/CancellationPolicy.jsx';
+import TermsAndConditions from './pages/TermsAndConditions.jsx';
 
 
 const router = createBrowserRouter(
@@ -43,6 +48,26 @@ const router = createBrowserRouter(
         {
           path : 'auth',
           element : <Auth/>
+        },
+        {
+          path : '/about',
+          element : <AboutUs/>
+        },
+        {
+          path : '/contact',
+          element : <ContactUs/>
+        },
+        {
+          path : '/privacy-policy',
+          element : <PrivacyPolicy/>
+        },
+        {
+          path : '/cancellation-policy',
+          element : <CancellationPolicy/>
+        },
+        {
+          path : '/termsAndCondition',
+          element : <TermsAndConditions/>
         }
       ]
     }
