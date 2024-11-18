@@ -1,5 +1,7 @@
 import { instance } from "../index.js"
 import crypto from 'crypto'
+import { Payment } from "../models/payment.model.js"
+import { ApiError } from "../utils/apiError.js"
 
 const createOrder = async(req,res,next)=>{
    try {
@@ -17,6 +19,7 @@ const createOrder = async(req,res,next)=>{
 const verifyPayment = async(req,res,next)=>{
     try {
         const {razorpay_payment_id , razorpay_order_id , razorpay_signature} = req.body
+        if(!razorpay_payment_id || !razorpay_order_id || !razorpay_signature ) return next(new ApiError("not complete details" , 400))
         
         //check if payment is valid
         //use sha256 algo on paymentId + order_id. It should be equal to signature
@@ -27,16 +30,14 @@ const verifyPayment = async(req,res,next)=>{
 
         console.log(generated_signature)
         console.log(razorpay_signature)
-        if(generated_signature === razorpay_signature ){
-            // save details in database
-            // console.log(req)
-            res.redirect(`${req.headers.origin}/paymentsuccess`)
-            // res.status(200).json({success:true})
+        if(generated_signature !== razorpay_signature ){
+            return next(new ApiError("invalid credentials" , 400)) 
         }
-        else{
-            return res.status(400).json({success:false , message : "payment unsuccessfull"})
-        }
+        
+        const payment = await Payment.create({user : req.user._id  , ...req.body})
+        if(!payment) return next(new ApiError("error while creating payment" ,400))
 
+        res.redirect(`${req.headers.origin}/paymentsuccess`)
         
     } catch (error) {
         return next(new Error(error.message , 500))

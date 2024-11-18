@@ -9,7 +9,7 @@ export default function ConfirmPayment() {
 
 
     const handlePayment = async ()=>{
-        const res = await axiosInstance.post('/api/create-order' , {amount})
+        const res = await axiosInstance.post('/create-order' , {amount} , {withCredentials:true})
         console.log(res.data.order)
 
         const options = {

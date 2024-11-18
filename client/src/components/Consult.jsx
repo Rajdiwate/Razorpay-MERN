@@ -2,9 +2,11 @@ import { useContext, useState } from 'react'
 import { ChevronDown, X } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 import { userContext } from '../context/Userinfo'
+import { useSelector } from 'react-redux'
 
 export default function Consult() {
   const [selectedCountry, setSelectedCountry] = useState('91')
+  // const {user} = useSelector(state=>state.user)
   const [name , setName]  = useState("")
   const [number , setNumber]  = useState()
   const {user , setUser} = useContext(userContext)

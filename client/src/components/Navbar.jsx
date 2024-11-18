@@ -1,10 +1,14 @@
 import { ChevronDown } from 'lucide-react'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Link } from 'react-router-dom';
+// import { userContext } from '../context/Userinfo';
+import { useSelector } from 'react-redux';
 
 const Navbar = () => {
-
+    const {isAuthenticated}= useSelector(state=>state.user)
     const [activeDropdown, setActiveDropdown] = useState(null);
+
+
 
     const toggleDropdown = (menu) => {
         setActiveDropdown(activeDropdown === menu ? null : menu);
@@ -80,9 +84,16 @@ const Navbar = () => {
                             )}
                         </div>
                     </div>
-                    <button className=" bg-slate-50 px-2 py-1.5 rounded-md hover:bg-slate-100  border text-xs text-slate-600">
-                        Login / Signup
-                    </button>
+                    {
+                        isAuthenticated? <button className=" bg-red-600 px-2 py-1.5 rounded-md hover:bg-red-100  border text-xs  text-white">
+                        Logout
+                    </button> : 
+                     <Link to='/auth'><button className=" bg-slate-50 px-2 py-1.5 rounded-md hover:bg-slate-100  border text-xs text-slate-600">
+                     Login / Signup
+                 </button></Link>
+                    }
+
+                   
                 </div>
             </div>
         </header>

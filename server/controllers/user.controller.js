@@ -5,7 +5,6 @@ import { User } from "../models/user.model.js";
 const generateTokens = async (userId) => {
     try {
         const user = await User.findById(userId);
-        console.log(user)
         const AT = await user.generateAccessToken();
         return { AT }
     } catch (error) {
@@ -100,7 +99,6 @@ const logoutUser = async (req, res, next) => {
     try {
         res.status(200)
             .clearCookie("accessToken")
-            .clearCookie("connect.sid") 
             .json({ success: true, message: "User logged out" });
     } catch (error) {
         return next(new ApiError(error.message, 400));
