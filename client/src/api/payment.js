@@ -1,7 +1,7 @@
 import { axiosInstance } from "../axios"
 
 
-const createOrder  = async()=>{
+const createOrder  = async(amount)=>{
     try {
         const {data} = await axiosInstance.post('/create-order' , {amount} , {withCredentials:true})
         if(data.success){

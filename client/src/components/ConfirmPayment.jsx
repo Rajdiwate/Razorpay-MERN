@@ -10,7 +10,7 @@ export default function ConfirmPayment() {
 
 
     const handlePayment = async ()=>{
-        const order = await createOrder();
+        const order = await createOrder(amount);
 
         const options = {
           key: import.meta.env.VITE_RAZORPAY_KEY, // Replace with your Razorpay key_id
