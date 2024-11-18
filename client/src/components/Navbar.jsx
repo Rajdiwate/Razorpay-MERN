@@ -1,14 +1,24 @@
 import { ChevronDown } from 'lucide-react'
 import React, { useContext, useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 // import { userContext } from '../context/Userinfo';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout as apiLogout } from '../api/auth';
+import { logout } from '../redux/authSlice';
 
 const Navbar = () => {
     const {isAuthenticated}= useSelector(state=>state.user)
+    const navigate  = useNavigate()
+    const dispatch = useDispatch()
     const [activeDropdown, setActiveDropdown] = useState(null);
 
-
+    const handleLogout = async ()=>{
+        const res = await apiLogout();
+        if(res){
+            dispatch(logout())
+            navigate('/auth')
+        }
+    }
 
     const toggleDropdown = (menu) => {
         setActiveDropdown(activeDropdown === menu ? null : menu);
@@ -19,7 +29,7 @@ const Navbar = () => {
             <div className="container mx-auto  px-20  flex items-center justify-between py-3">
                 <div className="flex items-center space-x-8">
                     {/* <img src="/placeholder.svg" alt="Practo logo" width={100} height={30} className="w-24" /> */}
-                    <Link to="/">PRACTO</Link>
+                    <Link to="/" className='font-extrabold text-xl'>PRACTO</Link>
                     <nav className="hidden md:flex space-x-6 text-base">
                         <a href="#" className="text-gray-700 hover:text-gray-900 text-sm font-semibold">Find Doctors</a>
                         <a href="#" className="text-gray-700 hover:text-gray-900 text-sm font-semibold">Video Consult</a>
@@ -85,7 +95,7 @@ const Navbar = () => {
                         </div>
                     </div>
                     {
-                        isAuthenticated? <button className=" bg-red-600 px-2 py-1.5 rounded-md hover:bg-red-100  border text-xs  text-white">
+                        isAuthenticated? <button className=" bg-red-600 px-2 py-1.5 rounded-md hover:bg-red-100  border text-xs  text-white" onClick={handleLogout}>
                         Logout
                     </button> : 
                      <Link to='/auth'><button className=" bg-slate-50 px-2 py-1.5 rounded-md hover:bg-slate-100  border text-xs text-slate-600">

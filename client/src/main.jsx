@@ -15,6 +15,7 @@ import Auth from './pages/Auth.jsx';
 import {Provider, useDispatch} from 'react-redux'
 import { store } from './redux/store.js';
 import { getUser } from './redux/authSlice.js';
+import Protected from './components/Protected.jsx';
 
 
 const router = createBrowserRouter(
@@ -25,19 +26,19 @@ const router = createBrowserRouter(
       children: [
         {
           path: '',
-          element: <Home />
+          element: <Protected><Home /></Protected>
         },
         {
           path: 'consult',
-          element: <Consult />
+          element: <Protected><Consult /></Protected>
         },
         {
           path: 'checkout',
-          element: <ConfirmPayment />
+          element: <Protected><ConfirmPayment /></Protected>
         },
         {
           path: 'paymentsuccess',
-          element: <Paymentsuccess />
+          element: <Protected><Paymentsuccess /></Protected>
         },
         {
           path : 'auth',

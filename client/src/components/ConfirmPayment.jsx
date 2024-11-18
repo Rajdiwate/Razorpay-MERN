@@ -2,6 +2,7 @@ import { useContext } from "react"
 import { axiosInstance } from "../axios"
 import { userContext } from "../context/Userinfo"
 import { Link } from "react-router-dom"
+import { createOrder } from "../api/payment"
 
 export default function ConfirmPayment() {
     const amount= 499
@@ -9,8 +10,7 @@ export default function ConfirmPayment() {
 
 
     const handlePayment = async ()=>{
-        const res = await axiosInstance.post('/create-order' , {amount} , {withCredentials:true})
-        console.log(res.data.order)
+        const order = await createOrder();
 
         const options = {
           key: import.meta.env.VITE_RAZORPAY_KEY, // Replace with your Razorpay key_id
@@ -18,7 +18,7 @@ export default function ConfirmPayment() {
           currency: 'INR',
           name: 'Testing',
           description: 'Test Transaction',
-          order_id: res.data.order.id, // This is the order_id created in the backend
+          order_id:order.id, // This is the order_id created in the backend
           callback_url: `${import.meta.env.VITE_API_ENDPOINT}/api/paymentverification`, // Your success URL
           prefill: {
             name:user?.name || "test",

@@ -48,32 +48,34 @@ export default function Home() {
       </div>
 
       {/* Main Services */}
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="container  mx-auto px-4 py-8">
+        <div className="flex justify-center gap-6">
           {[
             {
               title: "Instant Video Consultation",
               description: "Connect within 60 secs",
-              image: "/placeholder.svg?height=200&width=200",
+              image: "https://www.practostatic.com/consumer-home/desktop/images/1597423628/dweb_instant_video_consulation.png",
               bgColor: "bg-blue-100",
             },
             {
               title: "Find Doctors Near You",
               description: "Confirmed appointments",
-              image: "/placeholder.svg?height=200&width=200",
+              image: "https://www.practostatic.com/consumer-home/desktop/images/1597423628/dweb_find_doctors.png",
               bgColor: "bg-teal-100",
             },
             {
               title: "Surgeries",
               description: "Safe and trusted surgery centers",
-              image: "/placeholder.svg?height=200&width=200",
+              image: "	https://www.practostatic.com/consumer-home/desktop/images/1597423628/dweb_surgeries.png",
               bgColor: "bg-purple-100",
             },
           ].map((service, index) => (
-            <div key={index} className={`${service.bgColor} rounded-lg p-6 flex flex-col items-center text-center`}>
-              <img src={service.image} alt={service.title} width={200} height={200} className="mb-4 rounded-lg" />
-              <h3 className="text-xl font-semibold mb-2">{service.title}</h3>
+            <div key={index} className={`${service.bgColor} rounded-2xl shadow-2xl flex flex-col items-center text-center `}>
+              <img src={service.image} alt={service.title} className=" rounded-lg w-[210px] h-[220px]" />
+              <div className='bg-white rounded-b-2xl flex-1 flex flex-col justify-center p-1 '>
+              <h3 className="text-xl font-semibold  mb-1">{service.title}</h3>
               <p className="text-gray-600">{service.description}</p>
+              </div>
             </div>
           ))}
         </div>
