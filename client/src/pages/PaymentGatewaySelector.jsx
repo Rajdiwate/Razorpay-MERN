@@ -51,6 +51,7 @@ export default function PaymentGatewaySelector() {
     }
     else {
       const sessionDetails = await createCfSession({ amount, number: user.number })
+      console.log("session Details" , sessionDetails)
       const sessionId = sessionDetails.payment_session_id
 
       const cashfree = await load({
