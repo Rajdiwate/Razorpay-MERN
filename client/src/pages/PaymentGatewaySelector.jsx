@@ -11,7 +11,7 @@ export default function PaymentGatewaySelector() {
   const [error, setError] = useState(null)
   const navigate = useNavigate()
   const { user } = useContext(userContext)
-  const amount = 499
+  const amount = 10
 
   const handleGatewaySelection = (gateway) => {
     setSelectedGateway(gateway)
