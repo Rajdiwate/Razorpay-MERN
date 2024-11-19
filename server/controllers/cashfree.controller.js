@@ -34,7 +34,7 @@ const createCfSession = async (req, res, next) => {
     const config = getCashfreeDetails()
     Cashfree.XClientId = config.clientId
     Cashfree.XClientSecret = config.clientSecret
-    Cashfree.XEnvironment = Cashfree.Environment.SANDBOX
+    Cashfree.XEnvironment = process.env.PRODUCTION? Cashfree.Environment.PRODUCTION : Cashfree.Environment.SANDBOX
 
 
 
@@ -58,7 +58,7 @@ const verifyCfPayment = async (req,res,next) => {
     const config = getCashfreeDetails()
     Cashfree.XClientId = config.clientId
     Cashfree.XClientSecret = config.clientSecret
-    Cashfree.XEnvironment = Cashfree.Environment.SANDBOX
+    Cashfree.XEnvironment = process.env.PRODUCTION? Cashfree.Environment.PRODUCTION : Cashfree.Environment.SANDBOX
 
     Cashfree.PGOrderFetchPayments("2025-01-01", req.body.order_id).then((response) => {
       res.status(200).json({ success: true, data: response.data })
