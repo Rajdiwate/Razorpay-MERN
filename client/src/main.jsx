@@ -21,6 +21,7 @@ import ContactUs from './pages/ContactUs.jsx';
 import PrivacyPolicy from './pages/PrivacyPolicy.jsx';
 import CancellationPolicy from './pages/CancellationPolicy.jsx';
 import TermsAndConditions from './pages/TermsAndConditions.jsx';
+import PaymentGatewaySelector from './pages/PaymentGatewaySelector.jsx';
 
 
 const router = createBrowserRouter(
@@ -50,24 +51,28 @@ const router = createBrowserRouter(
           element : <Auth/>
         },
         {
-          path : '/about',
+          path : 'about',
           element : <AboutUs/>
         },
         {
-          path : '/contact',
+          path : 'contact',
           element : <ContactUs/>
         },
         {
-          path : '/privacy-policy',
+          path : 'privacy-policy',
           element : <PrivacyPolicy/>
         },
         {
-          path : '/cancellation-policy',
+          path : 'cancellation-policy',
           element : <CancellationPolicy/>
         },
         {
-          path : '/termsAndCondition',
+          path : 'termsAndCondition',
           element : <TermsAndConditions/>
+        },
+        {
+          path : 'selectPayment',
+          element : <PaymentGatewaySelector/>
         }
       ]
     }

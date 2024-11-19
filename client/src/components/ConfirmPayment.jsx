@@ -1,43 +1,12 @@
 import { useContext } from "react"
-import { axiosInstance } from "../axios"
-import { userContext } from "../context/Userinfo"
 import { Link } from "react-router-dom"
-import { createOrder } from "../api/payment"
+import { userContext } from "../context/Userinfo"
+
 
 export default function ConfirmPayment() {
-    const amount= 499
-    const {user} = useContext(userContext)
-
-
-    const handlePayment = async ()=>{
-        const order = await createOrder(amount);
-
-        const options = {
-          key: import.meta.env.VITE_RAZORPAY_KEY, // Replace with your Razorpay key_id
-          amount: amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-          currency: 'INR',
-          name: 'Testing',
-          description: 'Test Transaction',
-          order_id:order.id, // This is the order_id created in the backend
-          callback_url: `${import.meta.env.VITE_API_ENDPOINT}/api/paymentverification`, // Your success URL
-          prefill: {
-            name:user?.name || "test",
-            email:"test@test.com",
-            contact:user?.number || '123456789'
-          },
-          theme: {
-            color: '#F37254'
-          },
-        };
-        
-        // console.log(window)
-        const rzp = new window.Razorpay(options)
-        rzp.open()
-    }
-
-    
-
-
+  const amount = 499
+  const {user} = useContext(userContext)
+  
     return (
       <div className="min-h-screen bg-gray-50 p-4 flex items-center justify-center">
         <div className="bg-white rounded-lg shadow-lg w-full max-w-3xl p-6">
@@ -119,9 +88,11 @@ export default function ConfirmPayment() {
                   <div className="text-2xl font-bold">{`₹${amount}`}</div>
                 </div>
                 
-                <button className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition-colors" onClick={handlePayment}>
+                <Link to="/selectPayment">
+                <button className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition-colors" >
                   Continue to payment
                 </button>
+                </Link>
               </div>
             </div>
   
