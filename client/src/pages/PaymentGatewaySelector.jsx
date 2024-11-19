@@ -51,17 +51,15 @@ export default function PaymentGatewaySelector() {
     }
     else {
       const sessionDetails = await createCfSession({ amount, number: user.number })
-      console.log("session Details" , sessionDetails)
       const sessionId = sessionDetails.payment_session_id
 
       const cashfree = await load({
-        mode: "sandbox" //or production
+        mode: "production" //or production
       });
 
       let checkoutOptions = {
         paymentSessionId: sessionId,
-        redirectTarget: "_modal", //optional ( _self, _blank, or _top)
-        returnUrl : 'http://localhost:5173/paymentsuccess'    
+        redirectTarget: "_modal", //optional ( _self, _blank, or _top)   
       }
 
       cashfree.checkout(checkoutOptions).then(()=>{
