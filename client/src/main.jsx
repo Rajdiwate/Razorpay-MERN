@@ -8,7 +8,7 @@ import {
 } from "react-router-dom";
 import Homepage from './pages/Homepage.jsx';
 import Home from './components/Home.jsx';
-import ConfirmPayment from './components/ConfirmPayment.jsx';
+import ConfirmPayment from './components/ConfirmPayment.jsx'
 import Consult from './components/Consult.jsx';
 import Paymentsuccess from './pages/Paymentsuccess.jsx';
 import Auth from './pages/Auth.jsx';
@@ -72,7 +72,7 @@ const router = createBrowserRouter(
         },
         {
           path : 'selectPayment',
-          element : <PaymentGatewaySelector/>
+          element : <Protected><PaymentGatewaySelector/></Protected>
         }
       ]
     }
