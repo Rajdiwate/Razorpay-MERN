@@ -22,12 +22,16 @@ export const instance = new Razorpay({
 
     key_id: process.env.RAZORPAY_KEY,
     key_secret: process.env.RAZORPAY_SECRET,
+
 })
 
 
 export const getCashfreeDetails = function(){
+    const env = process.env.PRODUCTION ? Cashfree.Environment.PRODUCTION :Cashfree.Environment.SANDBOX 
+
     return {clientId : process.env.CASHFREE_APP_ID,
             clientSecret : process.env.CASHFREE_SECRET,
+            env
     }
 }
 

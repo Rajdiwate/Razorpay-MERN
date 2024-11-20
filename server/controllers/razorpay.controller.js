@@ -34,7 +34,7 @@ const verifyPayment = async(req,res,next)=>{
             return next(new ApiError("invalid credentials" , 400)) 
         }
         
-        const payment = await Payment.create({user : req.user._id  , ...req.body})
+        const payment = await Payment.create({user : req.user._id  , order_id :razorpay_order_id , payment_id : razorpay_payment_id })
         if(!payment) return next(new ApiError("error while creating payment" ,400))
 
         res.redirect(`${req.headers.origin}/paymentsuccess`)

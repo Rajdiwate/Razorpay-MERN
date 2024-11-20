@@ -2,6 +2,7 @@ import { Cashfree } from "cashfree-pg"
 import { ApiError } from "../utils/apiError.js"
 import crypto from 'crypto'
 import { getCashfreeDetails } from "../index.js"
+import { Payment } from "../models/payment.model.js"
 
 
 
@@ -34,12 +35,11 @@ const createCfSession = async (req, res, next) => {
     const config = getCashfreeDetails()
     Cashfree.XClientId = config.clientId
     Cashfree.XClientSecret = config.clientSecret
-    Cashfree.XEnvironment = process.env.PRODUCTION? Cashfree.Environment.PRODUCTION : Cashfree.Environment.SANDBOX
+    Cashfree.XEnvironment = config.env
 
 
 
     Cashfree.PGCreateOrder("2025-01-01", request).then((response) => {
-      console.log(response.data)
       res.status(201).json({ success: true, session: response.data })
     }).catch((error) => {
       console.error('Error setting up order request:', error.response.data);
@@ -58,10 +58,14 @@ const verifyCfPayment = async (req,res,next) => {
     const config = getCashfreeDetails()
     Cashfree.XClientId = config.clientId
     Cashfree.XClientSecret = config.clientSecret
-    Cashfree.XEnvironment = process.env.PRODUCTION? Cashfree.Environment.PRODUCTION : Cashfree.Environment.SANDBOX
+    Cashfree.XEnvironment = config.env
 
-    Cashfree.PGOrderFetchPayments("2025-01-01", req.body.order_id).then((response) => {
-      res.status(200).json({ success: true, data: response.data })
+    Cashfree.PGOrderFetchPayments("2025-01-01", req.body.order_id).then( async(response) => {
+      console.log("response" , response)
+
+    await Payment.create({user : req.user._id  , order_id : response.data[0].order_id , payment_id : response.data[0].cf_payment_id })
+    res.status(201).json({ success: true, data : res.data[0] })
+
     }).catch((err) => {
       res.status(404).json({ success: false, error: err.message })
     })

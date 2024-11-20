@@ -49,7 +49,7 @@ export default function PaymentGatewaySelector() {
       const rzp = new window.Razorpay(options)
       rzp.open()
     }
-    else {
+    else if(selectedGateway === 'Cashfree') {
       const sessionDetails = await createCfSession({ amount, number: user.number })
       const sessionId = sessionDetails.payment_session_id
 
@@ -62,18 +62,13 @@ export default function PaymentGatewaySelector() {
         redirectTarget: "_modal", //optional ( _self, _blank, or _top)   
       }
 
-      cashfree.checkout(checkoutOptions).then(()=>{
+      cashfree.checkout(checkoutOptions).then(async()=>{
         console.log("Payment initialized")
-        verifyCfPayment(sessionDetails.order_id).then((res)=>{
-          if(res){
-            alert("payment success")
-          }
-          else{
-            alert("payment failed please try again")
-          }
-          navigate('/')
-        })
+        await verifyCfPayment(sessionDetails.order_id)
       })
+
+    }
+    else{
 
     }
   }
@@ -104,6 +99,16 @@ export default function PaymentGatewaySelector() {
             >
               <Wallet className="mr-3 h-5 w-5" />
               Razorpay
+            </button>
+            <button
+              className={`w-full flex items-center justify-start px-4 py-3 rounded-md transition-colors ${selectedGateway === 'Razorpay'
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
+                }`}
+              onClick={() => handleGatewaySelection('PayU')}
+            >
+              <Wallet className="mr-3 h-5 w-5" />
+              PayU
             </button>
           </div>
           {error && <p className="text-red-500 text-sm mt-4">{error}</p>}
