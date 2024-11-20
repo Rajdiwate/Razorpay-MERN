@@ -16,11 +16,11 @@ const generateCfOrderId = () => {
 
 const createCfSession = async (req, res, next) => {
   try {
-
+    const id = generateCfOrderId()
     var request = {
       order_amount: req.body.amount,
       order_currency: "INR",
-      order_id: generateCfOrderId(),
+      order_id: id,
       customer_details: {
         customer_id: req.user._id,
         customer_name: req.user.name,
@@ -28,7 +28,8 @@ const createCfSession = async (req, res, next) => {
         customer_phone: req.body.number
       },
       order_meta: {
-        return_url: `${req.headers.origin}/paymentsuccess`
+        return_url: `${req.headers.origin}`,
+        payment_methods: ""
       }
     }
 
@@ -53,18 +54,24 @@ const createCfSession = async (req, res, next) => {
 
 }
 
-const verifyCfPayment = async (req,res,next) => {
+const verifyCfPayment = async (req, res, next) => {
   try {
     const config = getCashfreeDetails()
     Cashfree.XClientId = config.clientId
     Cashfree.XClientSecret = config.clientSecret
     Cashfree.XEnvironment = config.env
 
-    Cashfree.PGOrderFetchPayments("2025-01-01", req.body.order_id).then( async(response) => {
-      console.log("response" , response)
+    Cashfree.PGOrderFetchPayments("2025-01-01", req.body.order_id).then(async (response) => {
+      console.log("id : ", response.data[0].cf_payment_id)
+      console.log("status : ", response.data[0].payment_status)
 
-    await Payment.create({user : req.user._id  , order_id : response.data[0].order_id , payment_id : response.data[0].cf_payment_id })
-    res.status(201).json({ success: true, data : res.data[0] })
+      await Payment.create({ user: req.user._id, order_id: response.data[0].order_id, payment_id: response.data[0].cf_payment_id })
+      res.status(201).json(
+        {
+          success: true,
+          data: response.data[0]
+
+        })
 
     }).catch((err) => {
       res.status(404).json({ success: false, error: err.message })

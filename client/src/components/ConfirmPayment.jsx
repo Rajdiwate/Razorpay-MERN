@@ -1,11 +1,33 @@
 import { useContext } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { userContext } from "../context/Userinfo"
+import {createCfSession, verifyCfPayment} from '../api/payment'
+import {load} from '@cashfreepayments/cashfree-js'
 
 
 export default function ConfirmPayment() {
-  const amount = 499
-  const {user} = useContext(userContext)
+  
+  const {user , amount} = useContext(userContext)
+  
+  const handlePayment = async(e)=>{
+    e.preventDefault()
+    const sessionDetails = await createCfSession({ amount, number: user.number })
+      const sessionId = sessionDetails.payment_session_id
+
+      const cashfree = await load({
+        mode: "production" //or sandbox
+      });
+
+      let checkoutOptions = {
+        paymentSessionId: sessionId,
+        redirectTarget: "_self", //optional ( _self,_modal ,  _blank, or _top)   
+      }
+
+      cashfree.checkout(checkoutOptions).then(async()=>{
+        console.log("Payment initialized")
+        await verifyCfPayment(sessionDetails.order_id)
+       })
+  }
   
     return (
       <div className="min-h-screen bg-gray-50 p-4 flex items-center justify-center">
@@ -88,11 +110,11 @@ export default function ConfirmPayment() {
                   <div className="text-2xl font-bold">{`₹${amount}`}</div>
                 </div>
                 
-                <Link to="/selectPayment">
-                <button className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition-colors" >
+               
+                <button onClick={handlePayment} className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition-colors" >
                   Continue to payment
                 </button>
-                </Link>
+                
               </div>
             </div>
   

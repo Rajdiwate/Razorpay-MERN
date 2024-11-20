@@ -1,16 +1,16 @@
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { ChevronDown, X } from 'lucide-react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { userContext } from '../context/Userinfo'
 import { useSelector } from 'react-redux'
 
 export default function Consult() {
   const [selectedCountry, setSelectedCountry] = useState('91')
-  // const {user} = useSelector(state=>state.user)
   const [name , setName]  = useState("")
   const [number , setNumber]  = useState()
-  const {user , setUser} = useContext(userContext)
+  const {user , setUser , setAmount} = useContext(userContext)
   const navigate = useNavigate()
+  const {amount} = useParams()
 
   const countries = [
     { code: '91', name: 'India', flag: '🇮🇳' },
@@ -29,6 +29,10 @@ export default function Consult() {
     setUser({name: name , number : number} )
     navigate('/checkout')
   }
+  
+  useEffect(()=>{
+    setAmount(amount)
+  },[])
 
 
   return (
@@ -56,7 +60,7 @@ export default function Consult() {
                   </div>
                   <span className="text-gray-800">Dermatology</span>
                 </div>
-                <span className="text-gray-800">₹449</span>
+                <span className="text-gray-800">₹{`${amount}`}</span>
               </div>
             </div>
 

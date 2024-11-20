@@ -4,9 +4,6 @@ import { Link } from 'react-router-dom'
 export default function Home() {
   return (
     <div className="min-h-screen bg-white">
-
-      
-
       {/* Search Section */}
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
@@ -92,19 +89,19 @@ export default function Home() {
         <p className="text-gray-600 mb-8">Private online consultations with verified doctors in all specialists</p>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6">
           {[
-            { name: "Period doubts or Pregnancy", icon: "🧬" },
-            { name: "Acne, pimple or skin issues", icon: "🦷" },
-            { name: "Performance issues in bed", icon: "⚤" },
-            { name: "Cold, cough or fever", icon: "🤧" },
-            { name: "Child not feeling well", icon: "👶" },
-            { name: "Depression or anxiety", icon: "🧠" },
+            { name: "Period doubts or Pregnancy", icon: "🧬" , amount : 299 },
+            { name: "Acne, pimple or skin issues", icon: "🦷" , amount : 399 },
+            { name: "Performance issues in bed", icon: "⚤" , amount : 499 },
+            { name: "Cold, cough or fever", icon: "🤧" , amount : 599 },
+            { name: "Child not feeling well", icon: "👶" , amount : 699 },
+            { name: "Depression or anxiety", icon: "🧠" , amount : 799 },
           ].map((specialty, index) => (
             <div key={index} className="flex flex-col items-center text-center">
               <div className="bg-gray-100 rounded-full p-4 mb-4">
                 <span className="text-4xl">{specialty.icon}</span>
               </div>
               <h4 className="text-sm font-medium mb-2">{specialty.name}</h4>
-              <Link to="/consult" className="text-blue-600 text-sm font-medium">CONSULT NOW</Link>
+              <Link to={`/consult/${specialty.amount}`} className="text-blue-600 text-sm font-medium">CONSULT NOW<span className='text-red-700 block'>₹{specialty.amount}</span></Link>
             </div>
           ))}
         </div>
